@@ -4,7 +4,6 @@
 import re
 from typing import List
 import logging
-import re
 
 
 def filter_datum(fields: List[str],
