@@ -34,6 +34,6 @@ class RedactingFormatter(logging.Formatter):
         Format the log record and redact sensitive data.
         """
         message = super(RedactingFormatter, self).format(record)
-        redacted = filter_datum(self.fields, self.REDACTION,
+        return filter_datum(self.fields, self.REDACTION,
                                 message, self.SEPARATOR)
-        return redacted
+
