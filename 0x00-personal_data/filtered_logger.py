@@ -63,3 +63,22 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
         host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
         database=os.getenv('PERSONAL_DATA_DB_NAME'))
+
+
+def main() -> None:
+    ''' will obtain a database using get_db and retrieve all rows'''
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('SELECT * FROM users;')
+    cls = cursor.column_names
+    logger = logging.getLogger()
+    for row in cursor:
+        # message="".join("{}={}; ".format(k, v) for k, v in zip(fields, row))
+        message = ''.join(f'{cls[i]}={str(row[i])}; ' for i in range(len(cls)))
+        logger.info(message.strip())
+    cursor.close()
+    db.close()
+
+
+if __name__ == '__main__':
+    main()
