@@ -75,7 +75,7 @@ def get_db() -> connector.connection.MySQLConnection:
     :return: MySQLConnection object
     '''
     user: str = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
-    password: str = os.getenv('PERSONAL_DATA_DB_PASSWORD', 'root')
+    password: str = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
     host: str = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
     db: str = os.getenv('PERSONAL_DATA_DB_NAME')
     con: connector.connection.MySQLConnection = (
