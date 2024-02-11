@@ -5,7 +5,7 @@ import re
 from typing import List
 import logging
 import os
-import mysql.connector as connector
+import mysql.connector
 
 
 def filter_datum(fields: List[str],
@@ -68,7 +68,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> connector.connection.MySQLConnection:
+def get_db() -> mysql.connector.connection.MySQLConnection:
     '''
     Returns a connector to the database.
 
@@ -78,8 +78,8 @@ def get_db() -> connector.connection.MySQLConnection:
     password: str = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
     host: str = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
     db: str = os.getenv('PERSONAL_DATA_DB_NAME')
-    con: connector.connection.MySQLConnection = (
-        connector.connection.MySQLConnection(
+    con: mysql.connector.connection.MySQLConnection = (
+        mysql.connector.connection.MySQLConnection(
             user=user, password=password,
             host=host, database=db
         )
