@@ -48,6 +48,6 @@ class RedactingFormatter(logging.Formatter):
         """
         Format the log record and redact sensitive data.
         """
-        message = record.getMessage()
+        message = super(RedactingFormatter, self).format(record)
         return filter_datum(self.fields, self.REDACTION,
                             message, self.SEPARATOR)
