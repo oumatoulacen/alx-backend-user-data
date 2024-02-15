@@ -30,8 +30,6 @@ class SessionExpAuth(SessionAuth):
             return None
         if not isinstance(session_id, str):
             return None
-        if session_id not in self.user_id_by_session_id:
-            return None
         session_dictionary = self.user_id_by_session_id.get(session_id)
         if session_dictionary is None:
             return None
@@ -39,7 +37,11 @@ class SessionExpAuth(SessionAuth):
             return session_dictionary.get('user_id')
         if 'created_at' not in session_dictionary:
             return None
-        delta = session_dictionary.get('created_at') + timedelta(seconds=self.session_duration)
-        if datetime.now() >= delta:
+        created_at = session_dictionary.get('created_at')
+        if created_at is None:
+            return None
+        if (created_at + timedelta(seconds=self.session_duration)) < datetime.now():
             return None
         return session_dictionary.get('user_id')
+
+
