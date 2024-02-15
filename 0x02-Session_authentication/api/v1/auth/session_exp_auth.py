@@ -8,7 +8,7 @@ from typing import TypeVar
 
 class SessionExpAuth(SessionAuth):
     ''' SessionExpAuth class'''
-    session_duration = 0
+
     def __init__(self):
         ''' Constructor'''
         self.session_duration = int(getenv('SESSION_DURATION', 0))
@@ -39,7 +39,7 @@ class SessionExpAuth(SessionAuth):
             return session_dictionary.get('user_id')
         if 'created_at' not in session_dictionary:
             return None
-        if (datetime.now() - session_dictionary.get('created_at')) >= \
-                timedelta(seconds=self.session_duration):
+        delta = session_dictionary.get('created_at') + timedelta(seconds=self.session_duration)
+        if datetime.now() >= delta:
             return None
         return session_dictionary.get('user_id')
