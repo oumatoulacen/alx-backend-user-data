@@ -5,6 +5,8 @@ from os import getenv
 from datetime import datetime, timedelta
 from typing import TypeVar
 
+from models.user import User
+
 
 class SessionExpAuth(SessionAuth):
     ''' SessionExpAuth class'''
@@ -13,9 +15,16 @@ class SessionExpAuth(SessionAuth):
         ''' Constructor'''
         self.session_duration = int(getenv('SESSION_DURATION', 0))
 
+    def current_user(self, request=None):
+        ''' Return the current user based on a session cookie'''
+        session_id = self.session_cookie(request)
+        user_id = self.user_id_for_session_id(session_id)
+        return User.get(user_id)
+
     def create_session(self, user_id: str = None) -> str:
         ''' Create a session ID'''
         if user_id is None:
+            print('id is none')
             return None
         session_id = super().create_session(user_id)
         if session_id is None:
