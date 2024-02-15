@@ -2,7 +2,7 @@
 """ DocDocDocDocDocDoc
 """
 from os import getenv
-from flask import jsonify, request
+from flask import abort, jsonify, request
 from models.user import User
 from api.v1.views import app_views
 
@@ -35,3 +35,16 @@ def login_session():
     response = jsonify(user[0].to_json())
     response.set_cookie(getenv('SESSION_NAME'), session_id)
     return response
+
+
+@app_views.route('DELETE /api/v1/auth_session/logout', methods=['DELETE'],
+                 strict_slashes=False)
+def logout():
+    """ DELETE /api/v1/auth_session/logout
+    Return:
+      - 200 on success
+    """
+    from api.v1.auth.session_auth import SessionAuth
+    if SessionAuth().destroy_session(request):
+        return jsonify({}), 200
+    abort(404)
