@@ -8,13 +8,15 @@ from typing import TypeVar
 
 class SessionExpAuth(SessionAuth):
     ''' SessionExpAuth class'''
-
+    session_duration = 0
     def __init__(self):
         ''' Constructor'''
         self.session_duration = int(getenv('SESSION_DURATION', 0))
 
     def create_session(self, user_id: str = None) -> str:
         ''' Create a session ID'''
+        if user_id is None:
+            return None
         session_id = super().create_session(user_id)
         if session_id is None:
             return None
