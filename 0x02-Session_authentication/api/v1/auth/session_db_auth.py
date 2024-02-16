@@ -10,6 +10,9 @@ from uuid import uuid4
 
 class SessionDBAuth(SessionExpAuth):
     ''' SessionDBAuth class'''
+    def __init__(self):
+        super().__init__()
+
     def create_session(self, user_id: str = None) -> str:
         ''' Create a session ID'''
         if user_id is None:
@@ -18,6 +21,7 @@ class SessionDBAuth(SessionExpAuth):
         if session_id is None:
             return None
         user_session = UserSession(user_id=user_id, session_id=session_id)
+        print('user_session', user_session.created_at)
         user_session.save()
         return session_id
 
@@ -28,18 +32,16 @@ class SessionDBAuth(SessionExpAuth):
         if not isinstance(session_id, str):
             return None
         user_session = UserSession.search({'session_id': session_id})
-        print('user_session', user_session)
         if user_session is None or not user_session:
-            print('user_session is None')
             return None
         if self.session_duration <= 0:
-            print('session_duration <= 0')
             return user_session[0].user_id
         created_at = user_session[0].created_at
         if created_at is None:
-            print('created_at is None')
             return None
-        print('user_session[0].id', user_session[0].user_id)
+        if (created_at + timedelta(seconds=self.session_duration)) \
+                < datetime.utcnow():
+            return None
         return user_session[0].user_id
 
     def destroy_session(self, request=None):
