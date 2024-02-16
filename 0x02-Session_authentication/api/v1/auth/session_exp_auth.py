@@ -17,14 +17,12 @@ class SessionExpAuth(SessionAuth):
     def create_session(self, user_id: str = None) -> str:
         ''' Create a session ID'''
         if user_id is None:
-            print('id is none')
             return None
         session_id = super().create_session(user_id)
         if session_id is None:
             return None
         session_dictionary = {'user_id': user_id, 'created_at': datetime.now()}
         self.user_id_by_session_id[session_id] = session_dictionary
-        print('session_created:', self.user_id_by_session_id)
         return session_id
 
     def user_id_for_session_id(self, session_id: str = None) -> str:
