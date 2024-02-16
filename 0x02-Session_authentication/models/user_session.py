@@ -14,8 +14,3 @@ class UserSession(Base):
         super().__init__(*args, **kwargs)
         self.user_id = kwargs.get('user_id')
         self.session_id = kwargs.get('session_id')
-
-    def __str__(self) -> str:
-        """ String representation
-        """
-        return str(self.user_id) + ' ' + str(self.session_id)
