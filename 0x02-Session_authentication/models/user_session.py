@@ -19,14 +19,3 @@ class UserSession(Base):
         """ String representation
         """
         return str(self.user_id) + ' ' + str(self.session_id)
-
-    def save(self) -> None:
-        """ Save method
-        """
-        self.session_id = self._generate_uuid()
-        super().save()
-
-    def _generate_uuid(self) -> str:
-        """ Generate a UUID
-        """
-        return str(hashlib.md5(str(self.user_id).encode()).hexdigest())
