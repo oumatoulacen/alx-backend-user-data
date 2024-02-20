@@ -56,7 +56,7 @@ class DB:
     def update_user(self, user_id, **kwargs) -> None:
         """Update a user
         """
-        if not user_id:
+        if user_id is None:
             raise None
         user = self.find_user_by(id=user_id)
         if user:
