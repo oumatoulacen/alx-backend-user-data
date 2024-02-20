@@ -58,13 +58,10 @@ class DB:
     def update_user(self, user_id, **kwargs) -> None:
         """Update a user
         """
-        attrs = ["id", "email", "session_id", "reset_token", "hashed_password"]
         user = self.find_user_by(id=user_id)
-        for key, value in kwargs.items():
-            if key in attrs:
+        try:
+            for key, value in kwargs.items():
                 setattr(user, key, value)
-            else:
-                raise ValueError(f"Invalid attribute: {key}")
-        self._session.commit()
-        self._session.close()
-
+            self._session.commit()
+        except Exception as e:
+            raise e
