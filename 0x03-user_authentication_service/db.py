@@ -62,9 +62,9 @@ class DB:
         try:
             for key, value in kwargs.items():
                 setattr(user, key, value)
-            self._session.commit()
         except ValueError as e:
             raise e
         finally:
+            self._session.commit()
             self._session.close()
         return None
