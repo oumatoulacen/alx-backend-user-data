@@ -59,12 +59,13 @@ class DB:
         """Update a user
         """
         user = self.find_user_by(id=user_id)
-        try:
-            for key, value in kwargs.items():
-                setattr(user, key, value)
-        except ValueError as e:
-            raise e
-        finally:
-            self._session.commit()
-            self._session.close()
-        return None
+        if user:
+            try:
+                for key, value in kwargs.items():
+                    setattr(user, key, value)
+            except ValueError as e:
+                raise e
+            finally:
+                self._session.commit()
+                self._session.close()
+            return None
