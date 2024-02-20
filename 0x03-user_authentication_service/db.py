@@ -63,6 +63,8 @@ class DB:
         for key, value in kwargs.items():
             if key in attrs:
                 setattr(user, key, value)
-                self._session.commit()
             else:
-                raise ValueError
+                raise ValueError(f"Invalid attribute: {key}")
+        self._session.commit()
+        self._session.close()
+
