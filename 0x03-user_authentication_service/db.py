@@ -58,6 +58,8 @@ class DB:
     def update_user(self, user_id, **kwargs) -> None:
         """Update a user
         """
+        if not user_id:
+            return None
         attrs = ["id", "email", "session_id", "reset_token", "hashed_password"]
         user = self.find_user_by(id=user_id)
         if user:
