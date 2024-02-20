@@ -58,14 +58,13 @@ class DB:
     def update_user(self, user_id, **kwargs) -> None:
         """Update a user
         """
+        attrs = ["id", "email", "session_id", "reset_token", "hashed_password"]
         user = self.find_user_by(id=user_id)
         if user:
-            try:
-                for key, value in kwargs.items():
+            for key, value in kwargs.items():
+                if key in attrs:
                     setattr(user, key, value)
-            except ValueError as e:
-                raise e
-            finally:
-                self._session.commit()
-                self._session.close()
-            return None
+                else:
+                    raise ValueError
+            self._session.commit()
+            self._session.close()
