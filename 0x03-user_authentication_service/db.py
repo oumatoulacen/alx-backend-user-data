@@ -56,6 +56,8 @@ class DB:
     def update_user(self, user_id, **kwargs) -> None:
         """Update a user
         """
+        if not user_id:
+            raise None
         user = self.find_user_by(id=user_id)
         if user:
             for k, v in kwargs.items():
@@ -63,3 +65,4 @@ class DB:
                     raise ValueError
                 setattr(user, k, v)
             self._session.commit()
+        return None
