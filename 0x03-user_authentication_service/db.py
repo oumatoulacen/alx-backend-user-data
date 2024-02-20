@@ -2,7 +2,6 @@
 """DB module
 """
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
@@ -52,7 +51,7 @@ class DB:
             raise NoResultFound
         return user
 
-    def update_user(self, user_id, **kwargs) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """Update a user
         """
         if user_id is None:
