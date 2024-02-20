@@ -54,3 +54,15 @@ class DB:
             raise e
         finally:
             self._session.close()
+
+    def update_user(self, user_id, **kwargs) -> None:
+        """Update a user
+        """
+        attrs = ["id", "email", "session_id", "reset_token", "hashed_password"]
+        user = self.find_user_by(id=user_id)
+        for key, value in kwargs.items():
+            if key in attrs:
+                setattr(user, key, value)
+            else:
+                raise ValueError
+        self._session.commit()
