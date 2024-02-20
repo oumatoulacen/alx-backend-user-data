@@ -52,8 +52,6 @@ class DB:
             raise e
         except Exception as e:
             raise e
-        finally:
-            self._session.close()
 
     def update_user(self, user_id, **kwargs) -> None:
         """Update a user
@@ -65,5 +63,3 @@ class DB:
                     raise ValueError
                 setattr(user, k, v)
             self._session.commit()
-            self._session.close()
-        return None
