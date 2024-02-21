@@ -6,6 +6,7 @@ from auth import Auth
 
 
 app = Flask(__name__)
+AUTH = Auth()
 
 
 @app.route('/', methods=['GET'], strict_slashes=False)
@@ -15,6 +16,25 @@ def welcome() -> str:
       - welcome message
     """
     return jsonify({"message": "Bienvenue"})
+
+
+@app.route('/users', methods=['POST'], strict_slashes=False)
+def users() -> str:
+    """POST /users
+    JSON body:
+        - email
+        - password
+    Return:
+        - {"email": "<registered email>", "message": "user created"} if success
+        - {"message": "email already registered"} if error
+    """
+    email = request.form.get('email')
+    password = request.form.get('password')
+    try:
+        AUTH.register_user(email, password)
+        return jsonify({"email": email, "message": "user created"})
+    except ValueError:
+        return jsonify({"message": "email already registered"})
 
 
 if __name__ == "__main__":
