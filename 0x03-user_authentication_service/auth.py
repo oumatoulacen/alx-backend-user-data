@@ -18,7 +18,9 @@ class Auth:
     def __init__(self):
         self._db = DB()
 
-    def register_user(self, email: str, password: str) -> User | None:
+    def register_user(self,
+                      email: str,
+                      password: str) -> User | None | ValueError:
         '''Register a user.'''
         if not email or not password:
             return None
