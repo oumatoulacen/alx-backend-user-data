@@ -20,7 +20,7 @@ class Auth:
 
     def register_user(self, email: str, password: str) -> User | None:
         '''Register a user.'''
-        if not email or not password: 
+        if not email or not password:
             return None
         try:
             user = self._db.find_user_by(email=email)
