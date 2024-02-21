@@ -109,10 +109,12 @@ def get_reset_password_token() -> str:
         - abort with a 403 if error
     """
     email = request.form.get('email')
-    reset_token = AUTH.get_reset_password_token(email)
-    if reset_token:
-        return jsonify({"email": email, "reset_token": reset_token})
-    abort(403)
+    try:
+        reset_token = AUTH.get_reset_password_token(email)
+        if reset_token:
+            return jsonify({"email": email, "reset_token": reset_token})
+    except ValueError:
+        abort(403)
 
 
 if __name__ == "__main__":
