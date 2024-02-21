@@ -40,7 +40,7 @@ def users() -> str:
         return jsonify({"message": "email already registered"}), 400
 
 
-# sign in
+# sign in / log in
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
 def sessions() -> str:
     """POST /sessions
@@ -65,7 +65,7 @@ def sessions() -> str:
     abort(401)
 
 
-# sign out
+# sign out / log out
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def delete_session() -> str:
     """DELETE /sessions
