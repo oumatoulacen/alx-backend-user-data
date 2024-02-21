@@ -50,7 +50,7 @@ def sessions() -> str:
     Set-Cookie:
         - session_id = <session_id>
     Return:
-        - {"email": "<registered email>", "message": "logged in"} if success
+        - {"email": "<user email>", "message": "logged in"} if success
         - abort with a 401 if error
     """
     email = request.form.get('email')
@@ -72,7 +72,7 @@ def delete_session() -> str:
     JSON body:
         - session_id
     Return:
-        - {"message": "Bienvenue"} if success
+        - redirect to 'welcome' endpoint if success
         - abort with a 403 if error
     """
     session_id = request.cookies.get('session_id')
@@ -89,13 +89,29 @@ def profile() -> str:
     JSON body:
         - session_id
     Return:
-        - {"email": "<registered email>"} if success
+        - {"email": "<user email>"} if success
         - abort with a 403 if error
     """
     session_id = request.cookies.get('session_id')
     user = AUTH.get_user_from_session_id(session_id)
     if user:
         return jsonify({"email": user.email})
+    abort(403)
+
+
+@app.route('/reset_password', methods=['POST'], strict_slashes=False)
+def get_reset_password_token() -> str:
+    """POST /reset_password
+    JSON body:
+        - email
+    Return:
+        - {"email": "<user email>", "reset_token": "<reset_token>"} if success
+        - abort with a 403 if error
+    """
+    email = request.form.get('email')
+    reset_token = AUTH.get_reset_password_token(email)
+    if reset_token:
+        return jsonify({"email": email, "reset_token": reset_token})
     abort(403)
 
 
