@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """App module
 """
-from flask import Flask, jsonify, request, abort, make_response
+from flask import (
+    Flask, jsonify, request, abort, make_response, redirect, url_for
+    )
 from auth import Auth
 
 
@@ -18,6 +20,7 @@ def welcome() -> str:
     return jsonify({"message": "Bienvenue"})
 
 
+# sign up
 @app.route('/users', methods=['POST'], strict_slashes=False)
 def users() -> str:
     """POST /users
@@ -37,6 +40,7 @@ def users() -> str:
         return jsonify({"message": "email already registered"}), 400
 
 
+# sign in
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
 def sessions() -> str:
     """POST /sessions
@@ -59,6 +63,24 @@ def sessions() -> str:
         response.set_cookie('session_id', session_id)
         return response
     abort(401)
+
+
+# sign out
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def delete_session() -> str:
+    """DELETE /sessions
+    JSON body:
+        - session_id
+    Return:
+        - {"message": "Bienvenue"} if success
+        - abort with a 403 if error
+    """
+    session_id = request.cookies.get('session_id')
+    user = AUTH.get_user_from_session_id(session_id)
+    if user:
+        AUTH.destroy_session(user.id)
+        return redirect(url_for('welcome'))
+    abort(403)
 
 
 if __name__ == "__main__":
