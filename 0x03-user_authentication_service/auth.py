@@ -20,7 +20,7 @@ class Auth:
 
     def register_user(self,
                       email: str,
-                      password: str) -> User | None | ValueError:
+                      password: str) -> User:
         '''Register a user.'''
         if not email or not password:
             return None
